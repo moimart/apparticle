@@ -56,5 +56,16 @@
 @property CGFloat endColorAlphaVariation;
 @property unsigned int blendSource;
 @property unsigned int blendDestination;
+@property (strong) NSString *modelFilename;
+@property (strong) NSString *modelPrefix;
+@property CGFloat startYaw;
+@property CGFloat startYawVar;
+@property CGFloat startPitch;
+@property CGFloat startPitchVar;
+@property CGFloat endYaw;
+@property CGFloat endYawVar;
+@property CGFloat endPitch;
+@property CGFloat endPitchVar;
+
 
 @end

@@ -40,6 +40,7 @@
 
 - (IBAction)open:(id)sender;
 - (IBAction)save:(id)sender;
+- (IBAction)saveAs:(id)sender;
 - (IBAction)reportAnIssue:(id)sender;
 - (IBAction)requestAFeature:(id)sender;
 

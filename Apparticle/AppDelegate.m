@@ -145,6 +145,12 @@
     }];
 }
 
+- (IBAction)saveAs:(id)sender {
+    [self saveAsFlow:^(NSModalResponse returnCode) {
+        // ignore return code
+    }];
+}
+
 - (IBAction)reportAnIssue:(id)sender {
     [NSWorkspace.sharedWorkspace openURL:[NSURL URLWithString:@"https://github.com/pierredavidbelanger/apparticle/issues/new?labels=bug"]];
 }
@@ -209,11 +215,26 @@
     [self.window setTitleWithRepresentedFilename:[[self.window representedURL] path]];
 }
 
+- (void)saveAsFlow:(void (^)(NSModalResponse returnCode))callback
+{
+    NSSavePanel *p = [NSSavePanel savePanel];
+    p.title = @"Save the current particle system";
+    p.allowedFileTypes = @[@"plist"];
+    [p beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        if (result == NSFileHandlingPanelOKButton) {
+            [self.window setRepresentedURL:p.URL];
+            [self doSaveToRepresentedURL];
+        }
+        callback(NSAlertDefaultReturn);
+    }];
+
+}
+
 - (void)doSaveFlowWithoutPromptThenCallback:(void (^)(NSModalResponse returnCode))callback {
     if (![self.window representedURL]) {
         NSSavePanel *p = [NSSavePanel savePanel];
         p.title = @"Save the current particle system";
-        p.allowedFileTypes = @[@"plist"];
+        p.allowedFileTypes = @[@"particles"];
         [p beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
             if (result == NSFileHandlingPanelOKButton) {
                 [self.window setRepresentedURL:p.URL];
@@ -267,7 +288,7 @@
             if (!preset) {
                 NSOpenPanel *p = [NSOpenPanel openPanel];
                 p.title = @"Open a particle system";
-                p.allowedFileTypes = @[@"plist"];
+                p.allowedFileTypes = @[@"plist",@"particles"];
                 [p beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
                     if (result == NSFileHandlingPanelOKButton) {
                         [self.window setRepresentedURL:p.URL];
